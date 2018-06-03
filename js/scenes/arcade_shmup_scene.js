@@ -44,6 +44,19 @@ function ArcadeShmupScene(tilemap) {
         this.playerShip.y += 5;
       }
 
+      if (this.playerShip.x < 0) {
+        this.playerShip.x = 0;
+      }
+      if (this.playerShip.x + this.playerShip.width > GAME_WIDTH) {
+        this.playerShip.x = GAME_WIDTH - this.playerShip.width;
+      }
+      if (this.playerShip.y < 0) {
+        this.playerShip.y = 0;
+      }
+      if (this.playerShip.y + this.playerShip.height > GAME_HEIGHT) {
+        this.playerShip.y = GAME_HEIGHT - this.playerShip.height;
+      }
+
       if (spacePressed) {
         if (this.canShoot) {
           for (var i = 0; i < this.playerBullets.length; i++) {
@@ -60,7 +73,7 @@ function ArcadeShmupScene(tilemap) {
       }
       else {
         this.canShoot = true;
-      }  
+      }
     }
 
     // Move player bullets
