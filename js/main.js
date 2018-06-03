@@ -76,5 +76,5 @@ function goToNextLevel() {
 function restartGame() {
   youWin = false;
   this.currentLevel = 1;
-  this.nextScene = new MainScene(TileMaps['level1']);
+  this.nextScene = new ArcadeShmupScene(TileMaps['level1']);
 }

@@ -1,7 +1,9 @@
+var oceanImage = document.createElement("img");
+
+// Old assets from the previous game
 var tileImage = document.createElement("img");
 var playerImage = document.createElement("img");
 var treasureImage = document.createElement("img");
-var titleBgImage = document.createElement("img");
 
 var imagesToLoad = [
   { 
@@ -17,8 +19,8 @@ var imagesToLoad = [
     path: 'assets/90s_rupee.png'
   },
   {
-    imgPointer: titleBgImage,
-    path: 'assets/title.png'
+    imgPointer: oceanImage,
+    path: 'assets/poc-ocean.png'
   }
 ];
 var imagesLoaded = 0;
