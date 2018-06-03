@@ -1,18 +1,15 @@
+// List these in alphabetical order
 var oceanImage = document.createElement("img");
+var playerShipImage = document.createElement("img");
 
 // Old assets from the previous game
 var tileImage = document.createElement("img");
-var playerImage = document.createElement("img");
 var treasureImage = document.createElement("img");
 
 var imagesToLoad = [
   { 
     imgPointer: tileImage, 
     path: 'assets/tiles.png'
-  },
-  { 
-    imgPointer: playerImage, 
-    path: 'assets/player-right.png'
   },
   {
     imgPointer: treasureImage,
@@ -21,7 +18,11 @@ var imagesToLoad = [
   {
     imgPointer: oceanImage,
     path: 'assets/poc-ocean.png'
-  }
+  },
+  { 
+    imgPointer: playerShipImage, 
+    path: 'assets/player_ship.png'
+  },
 ];
 var imagesLoaded = 0;
 

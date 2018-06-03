@@ -16,23 +16,31 @@ function setupInput() {
 }
 
 function onKeydown(evt) {
+  var keyUsed = false;
   if (evt.keyCode === KEY_ENTER) {
     enterPressed = true;
+    keyUsed = true;
   }
   if (evt.keyCode === KEY_LEFT_ARROW) {
     leftPressed = true;
+    keyUsed = true;
   }
   if (evt.keyCode === KEY_UP_ARROW) {
     upPressed = true;
+    keyUsed = true;
   }
   if (evt.keyCode === KEY_RIGHT_ARROW) {
     rightPressed = true;
+    keyUsed = true;
   }
   if (evt.keyCode === KEY_DOWN_ARROW) {
     downPressed = true;
+    keyUsed = true;
   }
 
-  evt.preventDefault();
+  if (keyUsed) {
+    evt.preventDefault();
+  }
 }
 
 function onKeyup(evt) {
