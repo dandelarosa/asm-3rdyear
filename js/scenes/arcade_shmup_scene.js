@@ -91,6 +91,22 @@ function ArcadeShmupScene(tilemap) {
         if (this.objectCollider.objectsCollide(playerBullet, enemy)) {
           playerBullet.active = false;
           enemy.alive = false;
+          break;
+        }
+      }
+    }
+
+    // Detect collisions between player ship and enemies
+    if (this.playerShip) {
+      for (var j = 0; j < this.enemies.length; j++) {
+        var enemy = this.enemies[j];
+        if (enemy.alive === false) {
+          continue;
+        }
+        if (this.objectCollider.objectsCollide(this.playerShip, enemy)) {
+          this.playerShip = null;
+          enemy.alive = false;
+          break;
         }
       }
     }
