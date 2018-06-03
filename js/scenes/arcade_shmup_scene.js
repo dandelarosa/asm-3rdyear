@@ -23,6 +23,10 @@ function ArcadeShmupScene(tilemap) {
   this.init();
 
   this.update = function() {
+
+    // Move Objects
+
+    // Move player ship
     if (this.playerShip) {
       this.playerShip.oldX = this.playerShip.x;
       this.playerShip.oldY = this.playerShip.y;
@@ -59,16 +63,21 @@ function ArcadeShmupScene(tilemap) {
       }  
     }
 
+    // Move player bullets
     for (var i = 0; i < this.playerBullets.length; i++) {
       var playerBullet = this.playerBullets[i];
       playerBullet.update();
     }
 
+    // Move enemies
     for (var i = 0; i < this.enemies.length; i++) {
       var enemy = this.enemies[i];
       enemy.update();
     }
 
+    // Detect Collisions
+
+    // Detect collisions between player bullets and enemies
     for (var i = 0; i < this.playerBullets.length; i++) {
       var playerBullet = this.playerBullets[i];
       if (playerBullet.active === false) {
