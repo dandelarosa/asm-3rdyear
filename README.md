@@ -10,3 +10,11 @@ npm install http-server -g
 ```
 
 Launch the web server by calling `http-server -p 8000`, and then open the game in your browser by going to http://localhost:8000/.
+
+# How to Upload to itch.io (for Mac anyway)
+
+- In Finder, select the following: assets, index.html, js, and styles.
+- Right click and select `Compress 4 Items`.
+- Name the archive `asm-3rdyear.zip`.
+- Delete any previous versions of the game from the page.
+- Upload the new version.
