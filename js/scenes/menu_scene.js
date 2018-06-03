@@ -45,15 +45,12 @@ function MenuScene() {
   }
 
   this.draw = function() {
-    drawRect(0, 0, GAME_WIDTH, GAME_HEIGHT, 'white');
-    // A temporary test to see if empty space hasn't been drawn on yet
-    drawRect(0, 0, GAME_WIDTH, GAME_HEIGHT, 'yellow');
-    canvasContext.drawImage(titleBgImage, 0, 0);
+    drawRect(0, 0, GAME_WIDTH, GAME_HEIGHT, 'black');
 
     canvasContext.font = '48px Times';
-    drawText('David\'s World 3', GAME_WIDTH/2, 180, 'black', 'center', 'middle');
+    drawText('David\'s World 3', GAME_WIDTH/2, 180, 'white', 'center', 'middle');
     canvasContext.font = '36px Times';
-    drawText('Prototype', GAME_WIDTH/2, 230, 'black', 'center', 'middle');
+    drawText('Prototype', GAME_WIDTH/2, 230, 'white', 'center', 'middle');
 
     canvasContext.font = '30px Times';
 
@@ -61,7 +58,7 @@ function MenuScene() {
       drawText('> Start Game <', GAME_WIDTH/2, 300, 'yellow', 'center', 'middle');
     }
     else {
-      drawText('Start Game', GAME_WIDTH/2, 300, 'black', 'center', 'middle');
+      drawText('Start Game', GAME_WIDTH/2, 300, 'white', 'center', 'middle');
     }
     
 
@@ -69,14 +66,14 @@ function MenuScene() {
       drawText('> Instructions <', GAME_WIDTH/2, 340, 'yellow', 'center', 'middle');
     }
     else {
-      drawText('Instructions', GAME_WIDTH/2, 340, 'black', 'center', 'middle');
+      drawText('Instructions', GAME_WIDTH/2, 340, 'white', 'center', 'middle');
     }
     
     if (this.currentOption == 2) {
       drawText('> Credits <', GAME_WIDTH/2, 380, 'yellow', 'center', 'middle');
     }
     else {
-      drawText('Credits', GAME_WIDTH/2, 380, 'black', 'center', 'middle');
+      drawText('Credits', GAME_WIDTH/2, 380, 'white', 'center', 'middle');
     }
   }
 }
