@@ -1,5 +1,6 @@
 // List these in alphabetical order
 var oceanImage = document.createElement("img");
+var playerBulletImage = document.createElement("img");
 var playerShipImage = document.createElement("img");
 
 // Old assets from the previous game
@@ -18,6 +19,10 @@ var imagesToLoad = [
   {
     imgPointer: oceanImage,
     path: 'assets/poc-ocean.png'
+  },
+  { 
+    imgPointer: playerBulletImage, 
+    path: 'assets/player_bullet.png'
   },
   { 
     imgPointer: playerShipImage, 
