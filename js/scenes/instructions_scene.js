@@ -17,7 +17,7 @@ function InstructionsScene() {
     canvasContext.font = '48px Times';
     drawText('How to Play', GAME_WIDTH/2, 50, 'black', 'center', 'middle');
 
-    canvasContext.font = '30px Times';
+    canvasContext.font = '26px Times';
     drawText('arrow keys: move character / change options', GAME_WIDTH/2, 230, 'black', 'center', 'middle');
     drawText('enter key: pause game / select option', GAME_WIDTH/2, 280, 'black', 'center', 'middle');
 

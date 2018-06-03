@@ -1,5 +1,5 @@
-const GAME_WIDTH = 640;
-const GAME_HEIGHT = 480;
+const GAME_WIDTH = 480;
+const GAME_HEIGHT = 576;
 const FPS = 30;
 
 const TILE_NOTHING = 0;

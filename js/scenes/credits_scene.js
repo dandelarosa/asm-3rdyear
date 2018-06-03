@@ -17,7 +17,7 @@ function CreditsScene() {
     canvasContext.font = '48px Times';
     drawText('Credits', GAME_WIDTH/2, 50, 'black', 'center', 'middle');
 
-    canvasContext.font = '30px Times';
+    canvasContext.font = '26px Times';
 
     drawText('Annual Saga Monthly Game 3 (June 2018)', GAME_WIDTH/2, 150, 'black', 'center', 'middle');
     drawText('David\'s World 3 Prototype', GAME_WIDTH/2, 200, 'black', 'center', 'middle');

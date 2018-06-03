@@ -46,6 +46,8 @@ function MenuScene() {
 
   this.draw = function() {
     drawRect(0, 0, GAME_WIDTH, GAME_HEIGHT, 'white');
+    // A temporary test to see if empty space hasn't been drawn on yet
+    drawRect(0, 0, GAME_WIDTH, GAME_HEIGHT, 'yellow');
     canvasContext.drawImage(titleBgImage, 0, 0);
 
     canvasContext.font = '48px Times';
