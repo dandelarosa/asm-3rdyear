@@ -9,6 +9,16 @@ function ArcadeShmupScene(tilemap) {
       this.playerBullets.push(new PlayerBullet(0,0));
     }
     this.canShoot = true;
+
+    this.enemies = [
+      new EnemyShip(96, 100),
+      new EnemyShip(160, 100),
+      new EnemyShip(224, 100),
+      new EnemyShip(288, 100),
+      new EnemyShip(352, 100), 
+    ];
+
+    this.objectCollider = new ObjectCollider();
   };
   this.init();
 
@@ -53,6 +63,28 @@ function ArcadeShmupScene(tilemap) {
       var playerBullet = this.playerBullets[i];
       playerBullet.update();
     }
+
+    for (var i = 0; i < this.enemies.length; i++) {
+      var enemy = this.enemies[i];
+      enemy.update();
+    }
+
+    for (var i = 0; i < this.playerBullets.length; i++) {
+      var playerBullet = this.playerBullets[i];
+      if (playerBullet.active === false) {
+        continue;
+      }
+      for (var j = 0; j < this.enemies.length; j++) {
+        var enemy = this.enemies[j];
+        if (enemy.alive === false) {
+          continue;
+        }
+        if (this.objectCollider.objectsCollide(playerBullet, enemy)) {
+          playerBullet.active = false;
+          enemy.alive = false;
+        }
+      }
+    }
   }
 
   this.draw = function() {
@@ -61,6 +93,11 @@ function ArcadeShmupScene(tilemap) {
     for (var i = 0; i < this.playerBullets.length; i++) {
       var playerBullet = this.playerBullets[i];
       playerBullet.draw();
+    }
+
+    for (var i = 0; i < this.enemies.length; i++) {
+      var enemy = this.enemies[i];
+      enemy.draw();
     }
 
     this.playerShip && this.playerShip.draw();

@@ -1,11 +1,11 @@
 // List these in alphabetical order
+var enemyImage = document.createElement("img");
 var oceanImage = document.createElement("img");
 var playerBulletImage = document.createElement("img");
 var playerShipImage = document.createElement("img");
 
 // Old assets from the previous game
 var tileImage = document.createElement("img");
-var treasureImage = document.createElement("img");
 
 var imagesToLoad = [
   { 
@@ -13,8 +13,8 @@ var imagesToLoad = [
     path: 'assets/tiles.png'
   },
   {
-    imgPointer: treasureImage,
-    path: 'assets/90s_rupee.png'
+    imgPointer: enemyImage,
+    path: 'assets/enemy.png'
   },
   {
     imgPointer: oceanImage,
