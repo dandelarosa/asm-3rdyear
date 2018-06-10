@@ -83,15 +83,15 @@ function ArcadeShmupScene(tilemap) {
       this.playerShip.y += this.cameraSpeed;
 
       if (leftPressed) {
-        this.playerShip.x -= 5;
+        this.playerShip.x -= 8;
       }
-      else if (upPressed) {
+      if (upPressed) {
         this.playerShip.y -= 5;
       }
-      else if (rightPressed) {
-        this.playerShip.x += 5;
+      if (rightPressed) {
+        this.playerShip.x += 8;
       }
-      else if (downPressed) {
+      if (downPressed) {
         this.playerShip.y += 5;
       }
 
