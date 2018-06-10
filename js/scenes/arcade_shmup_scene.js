@@ -19,10 +19,36 @@ function ArcadeShmupScene(tilemap) {
     ];
 
     this.objectCollider = new ObjectCollider();
+
+    this.paused = false;
+    this.canPause = false;
+    this.canResume = false;
   };
   this.init();
 
   this.update = function() {
+
+    // Handle Pause
+
+    if (this.paused) {
+      if (enterPressed && this.canResume) {
+        this.paused = false;
+        this.canPause = false;
+      }
+      else if (!enterPressed) {
+        this.canResume = true;
+      }
+      return;
+    }
+    else {
+      if (enterPressed && this.canPause) {
+        this.paused = true;
+        this.canResume = false;
+      }
+      else if (!enterPressed) {
+        this.canPause = true;
+      }
+    }
 
     // Move Objects
 
@@ -139,5 +165,10 @@ function ArcadeShmupScene(tilemap) {
     }
 
     this.playerShip && this.playerShip.draw();
+
+    if (this.paused) {
+      canvasContext.font = '30px Times';
+      drawText('Paused', GAME_WIDTH/2, GAME_HEIGHT/2, 'black', 'center', 'middle');
+    }
   }
 }
