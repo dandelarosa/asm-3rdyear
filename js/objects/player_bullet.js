@@ -15,9 +15,6 @@ function PlayerBullet(x, y) {
     if (this.active) {
       this.y -= 15;
     }
-    if (this.y < 0) {
-      this.active = false;
-    }
   }
 
   this.draw = function() {

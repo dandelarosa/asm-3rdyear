@@ -1,5 +1,12 @@
 function ArcadeShmupScene(tilemap) {
   this.init = function() {
+    this.cameraY = 0;
+    this.cameraSpeed = -5; // Reminder: up is -y
+
+    // Simulate scrolling by displaying multiple versions of the background
+    this.background1Y = 0;
+    this.background2Y = -GAME_HEIGHT;
+
     this.playerShip = new PlayerShip();
     this.playerShip.x = 224;
     this.playerShip.y = 420;
@@ -50,12 +57,25 @@ function ArcadeShmupScene(tilemap) {
       }
     }
 
+    // Move Camera
+
+    this.cameraY += this.cameraSpeed;
+
+    if (this.background1Y > this.cameraY + GAME_HEIGHT) {
+      this.background1Y = this.background2Y - GAME_HEIGHT;
+    }
+    if (this.background2Y > this.cameraY + GAME_HEIGHT) {
+      this.background2Y = this.background1Y - GAME_HEIGHT;
+    }
+
     // Move Objects
 
     // Move player ship
     if (this.playerShip) {
       this.playerShip.oldX = this.playerShip.x;
       this.playerShip.oldY = this.playerShip.y;
+
+      this.playerShip.y += this.cameraSpeed;
 
       if (leftPressed) {
         this.playerShip.x -= 5;
@@ -76,11 +96,11 @@ function ArcadeShmupScene(tilemap) {
       if (this.playerShip.x + this.playerShip.width > GAME_WIDTH) {
         this.playerShip.x = GAME_WIDTH - this.playerShip.width;
       }
-      if (this.playerShip.y < 0) {
-        this.playerShip.y = 0;
+      if (this.playerShip.y < this.cameraY) {
+        this.playerShip.y = this.cameraY;
       }
-      if (this.playerShip.y + this.playerShip.height > GAME_HEIGHT) {
-        this.playerShip.y = GAME_HEIGHT - this.playerShip.height;
+      if (this.playerShip.y + this.playerShip.height > this.cameraY + GAME_HEIGHT) {
+        this.playerShip.y = this.cameraY + GAME_HEIGHT - this.playerShip.height;
       }
 
       if (spacePressed) {
@@ -106,11 +126,18 @@ function ArcadeShmupScene(tilemap) {
     for (var i = 0; i < this.playerBullets.length; i++) {
       var playerBullet = this.playerBullets[i];
       playerBullet.update();
+      if (playerBullet.active) {
+        playerBullet.y += this.cameraSpeed;
+        if (playerBullet.y < this.cameraY) {
+          playerBullet.active = false;
+        }
+      }
     }
 
     // Move enemies
     for (var i = 0; i < this.enemies.length; i++) {
       var enemy = this.enemies[i];
+      enemy.y += this.cameraSpeed;
       enemy.update();
     }
 
@@ -152,7 +179,12 @@ function ArcadeShmupScene(tilemap) {
   }
 
   this.draw = function() {
-    canvasContext.drawImage(oceanImage, 0, 0);
+    canvasContext.save();
+
+    canvasContext.translate(0, -this.cameraY);
+
+    canvasContext.drawImage(oceanImage, 0, this.background1Y);
+    canvasContext.drawImage(oceanImage, 0, this.background2Y);
 
     for (var i = 0; i < this.playerBullets.length; i++) {
       var playerBullet = this.playerBullets[i];
@@ -165,6 +197,8 @@ function ArcadeShmupScene(tilemap) {
     }
 
     this.playerShip && this.playerShip.draw();
+
+    canvasContext.restore();
 
     if (this.paused) {
       canvasContext.font = '30px Times';
