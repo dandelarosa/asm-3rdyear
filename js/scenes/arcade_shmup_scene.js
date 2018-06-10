@@ -17,13 +17,8 @@ function ArcadeShmupScene(tilemap) {
     }
     this.canShoot = true;
 
-    this.enemies = [
-      new EnemyShip(96, 100),
-      new EnemyShip(160, 100),
-      new EnemyShip(224, 100),
-      new EnemyShip(288, 100),
-      new EnemyShip(352, 100), 
-    ];
+    this.enemies = [];
+    this.enemyScheduler = new EnemyScheduler();
 
     this.objectCollider = new ObjectCollider();
 
@@ -67,6 +62,16 @@ function ArcadeShmupScene(tilemap) {
     if (this.background2Y > this.cameraY + GAME_HEIGHT) {
       this.background2Y = this.background1Y - GAME_HEIGHT;
     }
+
+    // Spawn New Enemies
+
+    var newEnemies = this.enemyScheduler.getEnemiesForThisFrame();
+    for (var i = 0; i < newEnemies.length; i++) {
+      var newEnemy = newEnemies[i];
+      newEnemy.y += this.cameraY;
+      this.enemies.push(newEnemy);
+    }
+    this.enemyScheduler.tick();
 
     // Move Objects
 
