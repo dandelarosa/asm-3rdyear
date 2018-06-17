@@ -14,11 +14,10 @@ function Boss(x, y) {
     this.distanceTraveled = 0;
 
     this.turrets = [
-      { x: 0, y: 0, angle: 90},
-      { x: 64, y: 0, angle: 0 },
-      { x: 64, y: 150, angle: 0 },
-      { x: 320, y: 0, angle: 0 },
-      { x: 320, y: 150, angle: 0 },
+      { x: 48, y: 48, angle: 0 },
+      { x: 48, y: 152, angle: 0 },
+      { x: 352, y: 48, angle: 0 },
+      { x: 352, y: 152, angle: 0 },
     ]
   };
   this.init();
