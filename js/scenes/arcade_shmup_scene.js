@@ -160,7 +160,7 @@ function ArcadeShmupScene(tilemap) {
     // Move boss
     if (this.boss) {
       this.boss.y += this.cameraSpeed;
-      this.boss.update();
+      this.boss.update(this.playerShip);
     }
 
     // Detect Collisions
