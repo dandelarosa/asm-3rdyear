@@ -11,6 +11,17 @@ function Boss(x, y) {
     this.height = BOSS_HEIGHT;
     this.alive = true;
     this.distanceTraveled = 0;
+
+    this.turrets = [
+      { x: 0, y: 0, angle: 0},
+      { x: 0, y: 0, angle: 90},
+      { x: 0, y: 0, angle: 180},
+      { x: 0, y: 0, angle: 270},
+      { x: 64, y: 0, angle: 0 },
+      { x: 64, y: 150, angle: 0 },
+      { x: 320, y: 0, angle: 0 },
+      { x: 320, y: 150, angle: 0 },
+    ]
   };
   this.init();
 
@@ -25,6 +36,16 @@ function Boss(x, y) {
   this.draw = function() {
     if (this.alive) {
       drawRect(this.x, this.y, this.width, this.height, 'darkgray');
+
+      for (var i = 0; i < this.turrets.length; i++) {
+        var turret = this.turrets[i];
+        var angle = turret.angle;
+        canvasContext.save();
+        canvasContext.translate(this.x + turret.x, this.y + turret.y);
+        canvasContext.rotate(angle * Math.PI / 180);
+        canvasContext.drawImage(bossTurretImage, -16, -16);
+        canvasContext.restore();
+      }
     }
   };
 }
