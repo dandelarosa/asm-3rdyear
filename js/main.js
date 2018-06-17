@@ -70,7 +70,7 @@ function goToCredits() {
 function goToNextLevel() {
   this.currentLevel++;
   var levelId = 'level' + this.currentLevel;
-  this.nextScene = new MainScene(TileMaps[levelId]);
+  this.nextScene = new ArcadeShmupScene(TileMaps[levelId]);
 }
 
 function restartGame() {

@@ -1,4 +1,5 @@
 // List these in alphabetical order
+var bossTurretImage = document.createElement("img");
 var enemyImage = document.createElement("img");
 var oceanImage = document.createElement("img");
 var playerBulletImage = document.createElement("img");
@@ -9,8 +10,8 @@ var tileImage = document.createElement("img");
 
 var imagesToLoad = [
   { 
-    imgPointer: tileImage, 
-    path: 'assets/tiles.png'
+    imgPointer: bossTurretImage, 
+    path: 'assets/boss_turret.png'
   },
   {
     imgPointer: enemyImage,

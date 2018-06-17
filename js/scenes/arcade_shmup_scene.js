@@ -20,6 +20,9 @@ function ArcadeShmupScene(tilemap) {
     this.enemies = [];
     this.enemyScheduler = new EnemyScheduler();
 
+    this.boss = null;
+    this.youWin = false;
+
     this.objectCollider = new ObjectCollider();
 
     this.paused = false;
@@ -72,6 +75,14 @@ function ArcadeShmupScene(tilemap) {
       this.enemies.push(newEnemy);
     }
     this.enemyScheduler.tick();
+
+    // Spawn Boss
+
+    // Eventually there will be a timer for spawning the boss
+    if (this.boss === null) {
+      this.boss = new Boss(40, -BOSS_HEIGHT);
+      this.boss.y += this.cameraY;
+    }
 
     // Move Objects
 
@@ -146,6 +157,12 @@ function ArcadeShmupScene(tilemap) {
       enemy.update();
     }
 
+    // Move boss
+    if (this.boss) {
+      this.boss.y += this.cameraSpeed;
+      this.boss.update(this.playerShip);
+    }
+
     // Detect Collisions
 
     // Detect collisions between player bullets and enemies
@@ -190,6 +207,8 @@ function ArcadeShmupScene(tilemap) {
 
     canvasContext.drawImage(oceanImage, 0, this.background1Y);
     canvasContext.drawImage(oceanImage, 0, this.background2Y);
+
+    this.boss && this.boss.draw();
 
     for (var i = 0; i < this.playerBullets.length; i++) {
       var playerBullet = this.playerBullets[i];
