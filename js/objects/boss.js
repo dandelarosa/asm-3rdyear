@@ -17,6 +17,8 @@ function Boss(x, y) {
     this.height = BOSS_HEIGHT;
     this.alive = true;
     this.distanceTraveled = 0;
+    this.health = 50;
+    this.hurt = false;
 
     this.turrets = [
       { x: 48, y: 48, angle: 0, health: 100, hurt: false },
@@ -54,6 +56,14 @@ function Boss(x, y) {
           else {
             turret.hurtTimer--;
           }
+        }
+      }
+      if (this.hurt === true) {
+        if (this.hurtTimer === 0) {
+          this.hurt = false;
+        }
+        else {
+          this.hurtTimer--;
         }
       }
     }
@@ -113,8 +123,31 @@ function Boss(x, y) {
         }
       }
     }
-    else {
-      // TODO: implement
+    else if (this.alive) {
+      for (var i = 0; i < bullets.length; i++) {
+        var bullet = bullets[i];
+        if (bullet.active === true) {
+          var turret = this.turrets[j];
+          var x1 = this.x;
+          var y1 = this.y;
+          var w1 = this.width;
+          var h1 = this.height;
+          var x2 = bullet.x;
+          var y2 = bullet.y;
+          var w2 = bullet.width;
+          var h2 = bullet.height;
+          if (this.coordsCollide(x1, y1, w1, h1, x2, y2, w2, h2)) {
+            this.hurt = true;
+            this.hurtTimer = 2;
+            this.health--;
+            if (this.health <= 0) {
+              this.alive = false;
+            }
+            bullet.active = false;
+            continue;
+          }
+        }
+      }
     }
   }
 
@@ -148,7 +181,14 @@ function Boss(x, y) {
 
   this.draw = function() {
     if (this.alive) {
-      drawRect(this.x, this.y, this.width, this.height, 'darkgray');
+      var imageToUse;
+      if (this.hurt) {
+        imageToUse = bossHurtImage;
+      }
+      else {
+        imageToUse = bossImage;
+      }
+      canvasContext.drawImage(imageToUse, this.x, this.y);
 
       for (var i = 0; i < this.turrets.length; i++) {
         var turret = this.turrets[i];

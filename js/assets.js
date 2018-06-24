@@ -1,4 +1,6 @@
 // List these in alphabetical order
+var bossHurtImage = document.createElement("img");
+var bossImage = document.createElement("img");
 var bossTurretHurtImage = document.createElement("img");
 var bossTurretImage = document.createElement("img");
 var enemyBulletImage = document.createElement("img");
@@ -11,6 +13,14 @@ var playerShipImage = document.createElement("img");
 var tileImage = document.createElement("img");
 
 var imagesToLoad = [
+  { 
+    imgPointer: bossHurtImage, 
+    path: 'assets/boss_hurt.png'
+  },
+  { 
+    imgPointer: bossImage, 
+    path: 'assets/boss.png'
+  },
   { 
     imgPointer: bossTurretHurtImage, 
     path: 'assets/boss_turret_hurt.png'
