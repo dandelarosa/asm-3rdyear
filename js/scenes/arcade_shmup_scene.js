@@ -198,6 +198,11 @@ function ArcadeShmupScene(tilemap) {
       }
     }
 
+    // Detect collisions between player bullets and boss
+    if (this.boss) {
+      this.boss.collideWithBullets(this.playerBullets);
+    }
+
     // Detect collisions between player ship and enemies
     if (this.playerShip) {
       for (var j = 0; j < this.enemies.length; j++) {

@@ -1,6 +1,9 @@
 const BOSS_WIDTH = 400;
 const BOSS_HEIGHT = 200;
 
+const BOSS_TURRET_WIDTH = 32;
+const BOSS_TURRET_HEIGHT = 32;
+
 const BOSS_TRAVEL_SPEED = 4;
 const BOSS_MAX_DISTANCE_TRAVELED = 256;
 
@@ -16,11 +19,12 @@ function Boss(x, y) {
     this.distanceTraveled = 0;
 
     this.turrets = [
-      { x: 48, y: 48, angle: 0 },
-      { x: 48, y: 152, angle: 0 },
-      { x: 352, y: 48, angle: 0 },
-      { x: 352, y: 152, angle: 0 },
+      { x: 48, y: 48, angle: 0, hurt: false },
+      { x: 48, y: 152, angle: 0, hurt: false },
+      { x: 352, y: 48, angle: 0, hurt: false },
+      { x: 352, y: 152, angle: 0, hurt: false },
     ];
+    this.numTurretsAlive = this.turrets.length;
     this.fireTimer = BOSS_FIRE_TIMER_MAX;
   };
   this.init();
@@ -40,6 +44,15 @@ function Boss(x, y) {
         var shipY = ship.y + ship.height / 2;
 
         turret.angle = Math.atan2(shipY - turretY, shipX - turretX);
+
+        if (turret.hurt === true) {
+          if (turret.hurtTimer === 0) {
+            turret.hurt = false;
+          }
+          else {
+            turret.hurtTimer--;
+          }
+        }
       }
     }
   };
@@ -67,6 +80,64 @@ function Boss(x, y) {
     return result;
   }
 
+  this.collideWithBullets = function(bullets) {
+    // Player can't damage boss until all turrets are destroyed
+    if (this.numTurretsAlive > 0) {
+      for (var i = 0; i < this.turrets.length; i++) {
+        var turret = this.turrets[i];
+        for (var j = 0; j < bullets.length; j++) {
+          var bullet = bullets[j];
+          if (bullet.active === true) {
+            var x1 = this.x + turret.x - BOSS_TURRET_WIDTH / 2;
+            var y1 = this.y + turret.y - BOSS_TURRET_HEIGHT / 2;
+            var w1 = BOSS_TURRET_WIDTH;
+            var h1 = BOSS_TURRET_HEIGHT;
+            var x2 = bullet.x;
+            var y2 = bullet.y;
+            var w2 = bullet.width;
+            var h2 = bullet.height;
+            if (this.coordsCollide(x1, y1, w1, h1, x2, y2, w2, h2)) {
+              turret.hurt = true;
+              turret.hurtTimer = 2;
+              bullet.active = false;
+            }
+          }
+        }
+      }
+    }
+    else {
+      // TODO: implement
+    }
+  }
+
+  this.coordsCollide = function(x1, y1, w1, h1, x2, y2, w2, h2) {
+    var rect1left = x1;
+    var rect1right = x1 + w1;
+    var rect1top = y1;
+    var rect1bottom = y1 + h1;
+
+    var rect2left = x2;
+    var rect2right = x2 + w2;
+    var rect2top = y2;
+    var rect2bottom = y2 + h2;
+
+    if (rect1left >= rect2right) {
+      return false;
+    }
+    else if (rect1right <= rect2left) {
+      return false;
+    }
+    else if (rect1top >= rect2bottom) {
+      return false;
+    }
+    else if (rect1bottom <= rect2top) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
   this.draw = function() {
     if (this.alive) {
       drawRect(this.x, this.y, this.width, this.height, 'darkgray');
@@ -77,7 +148,14 @@ function Boss(x, y) {
         canvasContext.save();
         canvasContext.translate(this.x + turret.x, this.y + turret.y);
         canvasContext.rotate(angle);
-        canvasContext.drawImage(bossTurretImage, -16, -16);
+        var imageToUse;
+        if (turret.hurt) {
+          imageToUse = bossTurretHurtImage;
+        }
+        else {
+          imageToUse = bossTurretImage;
+        }
+        canvasContext.drawImage(imageToUse, -16, -16);
         canvasContext.restore();
       }
     }
