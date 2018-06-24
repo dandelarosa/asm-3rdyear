@@ -35,16 +35,18 @@ function Boss(x, y) {
       this.distanceTraveled += BOSS_TRAVEL_SPEED;
     }
 
-    if (this.alive && ship) {
+    if (this.alive) {
       for (var i = 0; i < this.turrets.length; i++) {
         var turret = this.turrets[i];
-        var turretX = this.x + turret.x;
-        var turretY = this.y + turret.y;
-        var shipX = ship.x + ship.width / 2;
-        var shipY = ship.y + ship.height / 2;
 
-        turret.angle = Math.atan2(shipY - turretY, shipX - turretX);
-
+        if (ship) {
+          var turretX = this.x + turret.x;
+          var turretY = this.y + turret.y;
+          var shipX = ship.x + ship.width / 2;
+          var shipY = ship.y + ship.height / 2;
+          turret.angle = Math.atan2(shipY - turretY, shipX - turretX);
+        }
+        
         if (turret.hurt === true) {
           if (turret.hurtTimer === 0) {
             turret.hurt = false;
