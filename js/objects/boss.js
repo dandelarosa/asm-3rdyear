@@ -17,7 +17,7 @@ function Boss(x, y) {
     this.height = BOSS_HEIGHT;
     this.alive = true;
     this.distanceTraveled = 0;
-    this.health = 50;
+    this.health = 25;
     this.hurt = false;
 
     this.turrets = [

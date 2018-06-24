@@ -31,10 +31,17 @@ function ArcadeShmupScene(tilemap) {
     this.canResume = false;
 
     this.deathTimer = 60;
+    this.winTimer = 30;
   };
   this.init();
 
   this.update = function() {
+    if (this.youWin) {
+      if (enterPressed) {
+        goToMenu();
+      }
+      return;
+    }
 
     // Handle Pause
 
@@ -242,6 +249,15 @@ function ArcadeShmupScene(tilemap) {
         this.deathTimer--;
       }
     }
+
+    if (this.boss && this.boss.alive === false) {
+      if (this.winTimer === 0) {
+        this.youWin = true;
+      }
+      else {
+        this.winTimer--;
+      }
+    }
   }
 
   this.draw = function() {
@@ -276,6 +292,12 @@ function ArcadeShmupScene(tilemap) {
     if (this.paused) {
       canvasContext.font = '30px Times';
       drawText('Paused', GAME_WIDTH/2, GAME_HEIGHT/2, 'black', 'center', 'middle');
+    }
+    else if (this.youWin) {
+      canvasContext.font = '30px Times';
+      drawText('You Win!', GAME_WIDTH/2, GAME_HEIGHT/2 - 30, 'black', 'center', 'middle');
+      canvasContext.font = '20px Times';
+      drawText('Press Enter to Return to Menu', GAME_WIDTH/2, GAME_HEIGHT/2 + 10, 'black', 'center', 'middle');
     }
   }
 }
