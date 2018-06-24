@@ -18,6 +18,7 @@ function ArcadeShmupScene(tilemap) {
     this.canShoot = true;
 
     this.enemies = [];
+    this.enemyBullets = [];
     this.enemyScheduler = new EnemyScheduler();
 
     this.boss = null;
@@ -28,10 +29,19 @@ function ArcadeShmupScene(tilemap) {
     this.paused = false;
     this.canPause = false;
     this.canResume = false;
+
+    this.deathTimer = 60;
+    this.winTimer = 30;
   };
   this.init();
 
   this.update = function() {
+    if (this.youWin) {
+      if (enterPressed) {
+        goToMenu();
+      }
+      return;
+    }
 
     // Handle Pause
 
@@ -161,6 +171,17 @@ function ArcadeShmupScene(tilemap) {
     if (this.boss) {
       this.boss.y += this.cameraSpeed;
       this.boss.update(this.playerShip);
+      var newEnemyBullets = this.boss.getNewEnemyBullets(this.playerShip);
+      if (newEnemyBullets.length > 0) {
+        this.enemyBullets = this.enemyBullets.concat(newEnemyBullets);
+      }
+    }
+
+    // Move enemy bullets
+    for (var i = 0; i < this.enemyBullets.length; i++) {
+      var enemyBullet = this.enemyBullets[i];
+      enemyBullet.y += this.cameraSpeed;
+      enemyBullet.update();
     }
 
     // Detect Collisions
@@ -184,6 +205,11 @@ function ArcadeShmupScene(tilemap) {
       }
     }
 
+    // Detect collisions between player bullets and boss
+    if (this.boss) {
+      this.boss.collideWithBullets(this.playerBullets);
+    }
+
     // Detect collisions between player ship and enemies
     if (this.playerShip) {
       for (var j = 0; j < this.enemies.length; j++) {
@@ -196,6 +222,40 @@ function ArcadeShmupScene(tilemap) {
           enemy.alive = false;
           break;
         }
+      }
+    }
+
+    // Detect collisions between player ship and enemy bullets
+    if (this.playerShip) {
+      for (var j = 0; j < this.enemyBullets.length; j++) {
+        var enemyBullet = this.enemyBullets[j];
+        if (enemyBullet.active === false) {
+          continue;
+        }
+        if (this.objectCollider.objectsCollide(this.playerShip, enemyBullet)) {
+          this.playerShip = null;
+          enemyBullet.active = false;
+          break;
+        }
+      }
+    }
+
+    // Just restart the level if the player died
+    if (!this.playerShip) {
+      if (this.deathTimer === 0) {
+        restartGame();
+      }
+      else {
+        this.deathTimer--;
+      }
+    }
+
+    if (this.boss && this.boss.alive === false) {
+      if (this.winTimer === 0) {
+        this.youWin = true;
+      }
+      else {
+        this.winTimer--;
       }
     }
   }
@@ -220,6 +280,11 @@ function ArcadeShmupScene(tilemap) {
       enemy.draw();
     }
 
+    for (var i = 0; i < this.enemyBullets.length; i++) {
+      var enemyBullet = this.enemyBullets[i];
+      enemyBullet.draw();
+    }
+
     this.playerShip && this.playerShip.draw();
 
     canvasContext.restore();
@@ -227,6 +292,12 @@ function ArcadeShmupScene(tilemap) {
     if (this.paused) {
       canvasContext.font = '30px Times';
       drawText('Paused', GAME_WIDTH/2, GAME_HEIGHT/2, 'black', 'center', 'middle');
+    }
+    else if (this.youWin) {
+      canvasContext.font = '30px Times';
+      drawText('You Win!', GAME_WIDTH/2, GAME_HEIGHT/2 - 30, 'black', 'center', 'middle');
+      canvasContext.font = '20px Times';
+      drawText('Press Enter to Return to Menu', GAME_WIDTH/2, GAME_HEIGHT/2 + 10, 'black', 'center', 'middle');
     }
   }
 }

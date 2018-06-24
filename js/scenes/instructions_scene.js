@@ -18,7 +18,8 @@ function InstructionsScene() {
 
     canvasContext.font = '26px Times';
     drawText('arrow keys: move character / change options', GAME_WIDTH/2, 230, 'white', 'center', 'middle');
-    drawText('enter key: pause game / select option', GAME_WIDTH/2, 280, 'white', 'center', 'middle');
+    drawText('space key: shoot', GAME_WIDTH/2, 280, 'white', 'center', 'middle');
+    drawText('enter key: pause game / select option', GAME_WIDTH/2, 330, 'white', 'center', 'middle');
 
     drawText('Press Enter to go back', GAME_WIDTH/2, 450, 'white', 'center', 'middle');
   }
