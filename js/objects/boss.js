@@ -19,10 +19,10 @@ function Boss(x, y) {
     this.distanceTraveled = 0;
 
     this.turrets = [
-      { x: 48, y: 48, angle: 0, hurt: false },
-      { x: 48, y: 152, angle: 0, hurt: false },
-      { x: 352, y: 48, angle: 0, hurt: false },
-      { x: 352, y: 152, angle: 0, hurt: false },
+      { x: 48, y: 48, angle: 0, health: 100, hurt: false },
+      { x: 48, y: 152, angle: 0, health: 100, hurt: false },
+      { x: 352, y: 48, angle: 0, health: 100, hurt: false },
+      { x: 352, y: 152, angle: 0, health: 100, hurt: false },
     ];
     this.numTurretsAlive = this.turrets.length;
     this.fireTimer = BOSS_FIRE_TIMER_MAX;
@@ -83,11 +83,11 @@ function Boss(x, y) {
   this.collideWithBullets = function(bullets) {
     // Player can't damage boss until all turrets are destroyed
     if (this.numTurretsAlive > 0) {
-      for (var i = 0; i < this.turrets.length; i++) {
-        var turret = this.turrets[i];
-        for (var j = 0; j < bullets.length; j++) {
-          var bullet = bullets[j];
-          if (bullet.active === true) {
+      for (var i = 0; i < bullets.length; i++) {
+        var bullet = bullets[i];
+        if (bullet.active === true) {
+          for (var j = 0; j < this.turrets.length; j++) {
+            var turret = this.turrets[j];
             var x1 = this.x + turret.x - BOSS_TURRET_WIDTH / 2;
             var y1 = this.y + turret.y - BOSS_TURRET_HEIGHT / 2;
             var w1 = BOSS_TURRET_WIDTH;
@@ -99,7 +99,13 @@ function Boss(x, y) {
             if (this.coordsCollide(x1, y1, w1, h1, x2, y2, w2, h2)) {
               turret.hurt = true;
               turret.hurtTimer = 2;
+              turret.health--;
+              if (turret.health <= 0) {
+                this.numTurretsAlive--;
+                this.turrets.splice(j, 1);
+              }
               bullet.active = false;
+              continue;
             }
           }
         }
