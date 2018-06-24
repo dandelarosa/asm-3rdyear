@@ -29,6 +29,8 @@ function ArcadeShmupScene(tilemap) {
     this.paused = false;
     this.canPause = false;
     this.canResume = false;
+
+    this.deathTimer = 60;
   };
   this.init();
 
@@ -223,6 +225,16 @@ function ArcadeShmupScene(tilemap) {
           enemyBullet.active = false;
           break;
         }
+      }
+    }
+
+    // Just restart the level if the player died
+    if (!this.playerShip) {
+      if (this.deathTimer === 0) {
+        restartGame();
+      }
+      else {
+        this.deathTimer--;
       }
     }
   }
