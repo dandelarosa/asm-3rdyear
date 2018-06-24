@@ -18,6 +18,7 @@ function ArcadeShmupScene(tilemap) {
     this.canShoot = true;
 
     this.enemies = [];
+    this.enemyBullets = [];
     this.enemyScheduler = new EnemyScheduler();
 
     this.boss = null;
@@ -161,6 +162,17 @@ function ArcadeShmupScene(tilemap) {
     if (this.boss) {
       this.boss.y += this.cameraSpeed;
       this.boss.update(this.playerShip);
+      var newEnemyBullets = this.boss.getNewEnemyBullets(this.playerShip);
+      if (newEnemyBullets.length > 0) {
+        this.enemyBullets = this.enemyBullets.concat(newEnemyBullets);
+      }
+    }
+
+    // Move enemy bullets
+    for (var i = 0; i < this.enemyBullets.length; i++) {
+      var enemyBullet = this.enemyBullets[i];
+      enemyBullet.y += this.cameraSpeed;
+      enemyBullet.update();
     }
 
     // Detect Collisions
@@ -198,6 +210,21 @@ function ArcadeShmupScene(tilemap) {
         }
       }
     }
+
+    // Detect collisions between player ship and enemy bullets
+    if (this.playerShip) {
+      for (var j = 0; j < this.enemyBullets.length; j++) {
+        var enemyBullet = this.enemyBullets[j];
+        if (enemyBullet.active === false) {
+          continue;
+        }
+        if (this.objectCollider.objectsCollide(this.playerShip, enemyBullet)) {
+          this.playerShip = null;
+          enemyBullet.active = false;
+          break;
+        }
+      }
+    }
   }
 
   this.draw = function() {
@@ -218,6 +245,11 @@ function ArcadeShmupScene(tilemap) {
     for (var i = 0; i < this.enemies.length; i++) {
       var enemy = this.enemies[i];
       enemy.draw();
+    }
+
+    for (var i = 0; i < this.enemyBullets.length; i++) {
+      var enemyBullet = this.enemyBullets[i];
+      enemyBullet.draw();
     }
 
     this.playerShip && this.playerShip.draw();

@@ -1,8 +1,10 @@
 const BOSS_WIDTH = 400;
 const BOSS_HEIGHT = 200;
 
-const BOSS_TRAVEL_SPEED = 1;
-const BOSS_MAX_DISTANCE_TRAVELED = 240;
+const BOSS_TRAVEL_SPEED = 4;
+const BOSS_MAX_DISTANCE_TRAVELED = 256;
+
+const BOSS_FIRE_TIMER_MAX = 60;
 
 function Boss(x, y) {
   this.init = function() {
@@ -18,7 +20,8 @@ function Boss(x, y) {
       { x: 48, y: 152, angle: 0 },
       { x: 352, y: 48, angle: 0 },
       { x: 352, y: 152, angle: 0 },
-    ]
+    ];
+    this.fireTimer = BOSS_FIRE_TIMER_MAX;
   };
   this.init();
 
@@ -40,6 +43,29 @@ function Boss(x, y) {
       }
     }
   };
+
+  this.getNewEnemyBullets = function(ship) {
+    var result = [];
+    if (this.alive && ship) {
+      // Fire bullets once boss is ready
+      if (this.distanceTraveled >= BOSS_MAX_DISTANCE_TRAVELED) {
+        if (this.fireTimer === 0) {
+          for (var i = 0; i < this.turrets.length; i++) {
+            var turret = this.turrets[i];
+            var turretX = this.x + turret.x;
+            var turretY = this.y + turret.y;
+            var shipX = ship.x + ship.width / 2;
+            var shipY = ship.y + ship.height / 2;
+            result.push(new EnemyBullet(turretX, turretY, shipX, shipY));
+          }
+          this.fireTimer = BOSS_FIRE_TIMER_MAX;
+        }
+        // Getters shouldn't alter state but we'll let this fly for now
+        this.fireTimer--;
+      }
+    }
+    return result;
+  }
 
   this.draw = function() {
     if (this.alive) {
